@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Title</title>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/mainstyle.css">
+    <script src="https://code.highcharts.com/stock/highstock.js"></script>
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+    <script src="js/scroll.js"></script>
+    <script src="js/data.js"></script>
+    <script src="js/chart/chart_call.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            Highcharts.setOptions({
+                lang:{
+                    months: ['Styczeń','Luty','Marzec','Kwiecień','Maj','Czerwiec','Lipiec','Sierpień','Wrzesień','Październik','Listopad','Grudzień'],
+                    shortMonths: ['Sty','Lut','Mar','Kwi','Maj','Cze','Lip','Sie','Wrz','Paź','Lis','Gru'],
+                    weekdays:['Poniedziałek','Wtorek','Środa','Czwartek','Piątek','Sobota','Niedziela'],
+                    printChart: "Drukuj wkres",
+                    downloadJPEG: "Pobierz w formacie .jpeg",
+                    downloadPDF: "Pobierz w formacie .pdf",
+                    downloadPNG: "Pobierz w formacie .png",
+                    downloadSVG: "Pobierz w formacie .svg",
+                    rangeSelectorFrom: "Od",
+                    rangeSelectorTo: "Do",
+                    rangeSelectorZoom: "Zakres",
+                    contextButtonTitle: "Menu wykresu"
+                }
+
+            });
+            chart1 = new Highcharts.stockChart({
+                chart: {
+                    renderTo: 'container1',
+                    defaultSeriesType: 'spline',
+                    backgroundColor: '#2B2B2B',
+                    events: {
+                        load: requestDataTemperatura
+                    },
+                },
+                title: {
+                    text: 'Temperatura',
+                    style: {
+                        color: '#E0E0E3',
+                        textTransform: 'uppercase',
+                        fontSize: '20px'
+                    }
+                },
+
+                rangeSelector: {
+                    inputStyle: {
+                        backgroundColor: '#2B2B2B',
+                        color: 'white'
+                    },
+                    labelStyle: {
+                        color: 'white'
+                    },
+                    buttons: [{
+                        type: 'hour',
+                        count: 1,
+                        text: '1h'
+                    }, {
+                        type: 'hour',
+                        count: 12,
+                        text: '12h'
+                    }, {
+                        type: 'day',
+                        count: 1,
+                        text: '1d'
+                    }, {
+                        type: 'week',
+                        count: 1,
+                        text: '1ty'
+                    }, {
+                        type: 'month',
+                        count: 1,
+                        text: '1m'
+                    }, {
+                        type: 'month',
+                        count: 6,
+                        text: '6m'
+                    }, {
+                        type: 'year',
+                        count: 1,
+                        text: '1rok'
+                    }, {
+                        type: 'all',
+                        text: 'All'
+                    }],
+                    selected: 3,
+                },
+                xAxis: {
+                    type: 'datetime',
+                    gridLineColor: '#707073',
+                    labels: {
+                        style: {
+                            color: '#E0E0E3'
+                        }
+                    },
+                    lineColor: '#707073',
+                    minorGridLineColor: '#505053',
+                    tickColor: '#707073',
+                    title: {
+                        style: {
+                            color: '#A0A0A3'
+
+                        }
+                    }
+                },
+                yAxis: {
+                    title: {
+                        text: '[%]',
+                    }
+                },
+                scrollbar: {
+                    enabled: false
+                },
+                series: [{
+                    data: []
+                }]
+            });
+        });
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            Highcharts.setOptions({
+                lang:{
+                    months: ['Styczeń','Luty','Marzec','Kwiecień','Maj','Czerwiec','Lipiec','Sierpień','Wrzesień','Październik','Listopad','Grudzień'],
+                    shortMonths: ['Sty','Lut','Mar','Kwi','Maj','Cze','Lip','Sie','Wrz','Paź','Lis','Gru'],
+                    weekdays:['Poniedziałek','Wtorek','Środa','Czwartek','Piątek','Sobota','Niedziela'],
+                    printChart: "Drukuj wkres",
+                    downloadJPEG: "Pobierz w formacie .jpeg",
+                    downloadPDF: "Pobierz w formacie .pdf",
+                    downloadPNG: "Pobierz w formacie .png",
+                    downloadSVG: "Pobierz w formacie .svg",
+                    rangeSelectorFrom: "Od",
+                    rangeSelectorTo: "Do",
+                    rangeSelectorZoom: "Zakres",
+                    contextButtonTitle: "Menu wykresu"
+                }
+
+            });
+            chart2 = new Highcharts.stockChart({
+                chart: {
+                    renderTo: 'container2',
+                    defaultSeriesType: 'spline',
+                    backgroundColor: '#2B2B2B',
+                    events: {
+                        load: requestDataCisnienie
+                    },
+                },
+                title: {
+                    text: 'Ciśnienie',
+                    style: {
+                        color: '#E0E0E3',
+                        textTransform: 'uppercase',
+                        fontSize: '20px'
+                    }
+                },
+
+                rangeSelector: {
+                    inputStyle: {
+                        backgroundColor: '#2B2B2B',
+                        color: 'white'
+                    },
+                    labelStyle: {
+                        color: 'white'
+                    },
+                    buttons: [{
+                        type: 'hour',
+                        count: 1,
+                        text: '1h'
+                    }, {
+                        type: 'hour',
+                        count: 12,
+                        text: '12h'
+                    }, {
+                        type: 'day',
+                        count: 1,
+                        text: '1d'
+                    }, {
+                        type: 'week',
+                        count: 1,
+                        text: '1ty'
+                    }, {
+                        type: 'month',
+                        count: 1,
+                        text: '1m'
+                    }, {
+                        type: 'month',
+                        count: 6,
+                        text: '6m'
+                    }, {
+                        type: 'year',
+                        count: 1,
+                        text: '1rok'
+                    }, {
+                        type: 'all',
+                        text: 'All'
+                    }],
+                    selected: 3,
+                },
+                xAxis: {
+                    type: 'datetime',
+                    gridLineColor: '#707073',
+                    labels: {
+                        style: {
+                            color: '#E0E0E3'
+                        }
+                    },
+                    lineColor: '#707073',
+                    minorGridLineColor: '#505053',
+                    tickColor: '#707073',
+                    title: {
+                        style: {
+                            color: '#A0A0A3'
+
+                        }
+                    }
+                },
+                yAxis: {
+                    title: {
+                        text: '[%]',
+                    }
+                },
+                scrollbar: {
+                    enabled: false
+                },
+                series: [{
+                    data: []
+                }]
+            });
+        });
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            Highcharts.setOptions({
+                lang:{
+                    months: ['Styczeń','Luty','Marzec','Kwiecień','Maj','Czerwiec','Lipiec','Sierpień','Wrzesień','Październik','Listopad','Grudzień'],
+                    shortMonths: ['Sty','Lut','Mar','Kwi','Maj','Cze','Lip','Sie','Wrz','Paź','Lis','Gru'],
+                    weekdays:['Poniedziałek','Wtorek','Środa','Czwartek','Piątek','Sobota','Niedziela'],
+                    printChart: "Drukuj wkres",
+                    downloadJPEG: "Pobierz w formacie .jpeg",
+                    downloadPDF: "Pobierz w formacie .pdf",
+                    downloadPNG: "Pobierz w formacie .png",
+                    downloadSVG: "Pobierz w formacie .svg",
+                    rangeSelectorFrom: "Od",
+                    rangeSelectorTo: "Do",
+                    rangeSelectorZoom: "Zakres",
+                    contextButtonTitle: "Menu wykresu"
+                }
+
+            });
+            chart3 = new Highcharts.stockChart({
+                chart: {
+                    renderTo: 'container3',
+                    defaultSeriesType: 'spline',
+                    backgroundColor: '#2B2B2B',
+                    events: {
+                        load: requestDataWilgotnosc
+                    },
+                },
+                title: {
+                    text: 'Wilgotność',
+                    style: {
+                        color: '#E0E0E3',
+                        textTransform: 'uppercase',
+                        fontSize: '20px'
+                    }
+                },
+
+                rangeSelector: {
+                    inputStyle: {
+                        backgroundColor: '#2B2B2B',
+                        color: 'white'
+                    },
+                    labelStyle: {
+                        color: 'white'
+                    },
+                    buttons: [{
+                        type: 'hour',
+                        count: 1,
+                        text: '1h'
+                    }, {
+                        type: 'hour',
+                        count: 12,
+                        text: '12h'
+                    }, {
+                        type: 'day',
+                        count: 1,
+                        text: '1d'
+                    }, {
+                        type: 'week',
+                        count: 1,
+                        text: '1ty'
+                    }, {
+                        type: 'month',
+                        count: 1,
+                        text: '1m'
+                    }, {
+                        type: 'month',
+                        count: 6,
+                        text: '6m'
+                    }, {
+                        type: 'year',
+                        count: 1,
+                        text: '1rok'
+                    }, {
+                        type: 'all',
+                        text: 'All'
+                    }],
+                    selected: 3,
+                },
+                xAxis: {
+                    type: 'datetime',
+                    gridLineColor: '#707073',
+                    labels: {
+                        style: {
+                            color: '#E0E0E3'
+                        }
+                    },
+                    lineColor: '#707073',
+                    minorGridLineColor: '#505053',
+                    tickColor: '#707073',
+                    title: {
+                        style: {
+                            color: '#A0A0A3'
+
+                        }
+                    }
+                },
+                yAxis: {
+                    title: {
+                        text: '[%]',
+                    }
+                },
+                scrollbar: {
+                    enabled: false
+                },
+                series: [{
+                    data: []
+                }]
+            });
+        });
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            Highcharts.setOptions({
+                lang:{
+                    months: ['Styczeń','Luty','Marzec','Kwiecień','Maj','Czerwiec','Lipiec','Sierpień','Wrzesień','Październik','Listopad','Grudzień'],
+                    shortMonths: ['Sty','Lut','Mar','Kwi','Maj','Cze','Lip','Sie','Wrz','Paź','Lis','Gru'],
+                    weekdays:['Poniedziałek','Wtorek','Środa','Czwartek','Piątek','Sobota','Niedziela'],
+                    printChart: "Drukuj wkres",
+                    downloadJPEG: "Pobierz w formacie .jpeg",
+                    downloadPDF: "Pobierz w formacie .pdf",
+                    downloadPNG: "Pobierz w formacie .png",
+                    downloadSVG: "Pobierz w formacie .svg",
+                    rangeSelectorFrom: "Od",
+                    rangeSelectorTo: "Do",
+                    rangeSelectorZoom: "Zakres",
+                    contextButtonTitle: "Menu wykresu"
+                }
+
+            });
+            chart4 = new Highcharts.stockChart({
+                chart: {
+                    renderTo: 'container4',
+                    defaultSeriesType: 'spline',
+                    backgroundColor: '#2B2B2B',
+                    events: {
+                        load: requestDataPylki
+                    },
+                },
+                title: {
+                    text: 'Zanieczyszczenie Pyłków PM 10',
+                        style: {
+                            color: '#E0E0E3',
+                            textTransform: 'uppercase',
+                            fontSize: '20px'
+                        }
+                },
+
+                rangeSelector: {
+                    inputStyle: {
+                        backgroundColor: '#2B2B2B',
+                        color: 'white'
+                    },
+                    labelStyle: {
+                        color: 'white'
+                    },
+                    buttons: [{
+                        type: 'hour',
+                        count: 1,
+                        text: '1h'
+                    }, {
+                        type: 'hour',
+                        count: 12,
+                        text: '12h'
+                    }, {
+                        type: 'day',
+                        count: 1,
+                        text: '1d'
+                    }, {
+                        type: 'week',
+                        count: 1,
+                        text: '1ty'
+                    }, {
+                        type: 'month',
+                        count: 1,
+                        text: '1m'
+                    }, {
+                        type: 'month',
+                        count: 6,
+                        text: '6m'
+                    }, {
+                        type: 'year',
+                        count: 1,
+                        text: '1rok'
+                    }, {
+                        type: 'all',
+                        text: 'All'
+                    }],
+                    selected: 3,
+                },
+                xAxis: {
+                    type: 'datetime',
+                    gridLineColor: '#707073',
+                    labels: {
+                        style: {
+                            color: '#E0E0E3'
+                        }
+                    },
+                    lineColor: '#707073',
+                    minorGridLineColor: '#505053',
+                    tickColor: '#707073',
+                    title: {
+                        style: {
+                            color: '#A0A0A3'
+
+                        }
+                    }
+                },
+                yAxis: {
+                    title: {
+                        text: '[%]',
+                    }
+                },
+                scrollbar: {
+                    enabled: false
+                },
+                series: [{
+                    data: []
+                }]
+            });
+        });
+    </script>
+</head>
+<body>
+    <!--Nawigacja-->
+    <nav class="navbar navbar-deufalt navbar-fixed-top navbar-inverse" role="navigation">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-down">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <p class="navbar-brand">Stacja pogodowa</p>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar-down">
+                <ul class="nav navbar-nav">
+                    <li><a href="#dane" class="slide-section">Aktualne dane</a></li>
+                    <li><a href="#wykresy" class="slide-section">Wykresy</a> </li>
+                    <li><a href="#stopka" class="slide-section">O stronie</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!--Obecne dane ze stacji-->
+    <header id="dane">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-sm-12">
+                    <!--Ostatnia aktualizacja-->
+                    <div class="row">
+                        <div class="col-xs-2">
+                            <img src="png/512/slonce.png" class="img-responsive center-block">
+                            <h5 align="center">Ostatnia aktualizacja</h5>
+                            <h4 align="center" padding-top="100px"><div id="aktualizacja">B/D</div></h4>
+                        </div>
+                        <!--Temperatura-->
+                        <div class="col-xs-2">
+                            <img src="png/512/temperatura.png" class="img-responsive center-block">
+                            <h5 align="center">Temperatura [°C]</h5>
+                            <h2 align="center"><div id="temperatura">B/D</div></h2>
+                        </div>
+                        <!--Cisnienie-->
+                        <div class="col-xs-2">
+                            <img src="png/512/cisnienie.png" class="img-responsive center-block">
+                            <h5 align="center">Ciśnienie [hPa]</h5>
+                            <h2 align="center"><div id="cisnienie">B/D</div></h2>
+                        </div>
+                        <!--Wilgotnosc-->
+                        <div class="col-xs-2">
+                            <img src="png/512/wilgotnosc.png" class="img-responsive center-block">
+                            <h5 align="center">Wilgotność [%]</h5>
+                            <h2 align="center"><div id="wilgotnosc">B/D</div></h2>
+                        </div>
+                        <!--Pylki PM-->
+                        <div class="col-xs-2">
+                            <img src="png/512/zanieczyszczenie.png" class="img-responsive center-block">
+                            <h5 align="center">Pyłki PM 10 [µg/m3]</h5>
+                            <h2 align="center"><div id="pylki">B/D</div></h2>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </header>
+
+    <!--Wykresy-->
+    <section id="wykresy">
+        <div class="container">
+            <div class="row">
+                    WYKRES 1
+                    <div id="container1"></div>
+                    <div id="container2"></div>
+                    <div id="container3"></div>
+                    <div id="container4"></div>
+            </div>
+        </div>
+    </section>
+
+    <!--Stopka-->
+    <footer id="stopka">
+
+    </footer>
+
+
+</body>
+</html>
